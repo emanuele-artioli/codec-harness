@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 class BaseCodec(ABC):
     """
@@ -28,8 +28,7 @@ class BaseCodec(ABC):
         Encodes a sequence of frames into a video file.
 
         Args:
-            frame_input_dir (str): Path to the directory containing input frames
-                                   (e.g., 'frame_%04d.png').
+            frame_input_dir (str): Path to the directory containing input frames.
             output_path (str): Path to write the encoded video file.
             options (Dict[str, Any]): A dictionary of codec-specific options
                                       to override the defaults.

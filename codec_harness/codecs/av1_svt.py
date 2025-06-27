@@ -11,36 +11,33 @@ class AV1SvtCodec(BaseCodec):
 
     def get_supported_options(self) -> Dict[str, Any]:
         return {
-            'preset': 8,                      # 0-12, higher is faster
-            'video_bitrate': "1600k",         # e.g., "1600k", "2M"
-            'gop_size': 50,                   # Keyframe interval
-            'scale_height': 540,              # Vertical resolution, e.g., 540 for 540p
+            'preset': 8,
+            'video_bitrate': "1600k",
+            'gop_size': 50,
+            'scale_height': 540,
             'framerate': 30,
-            'fragmented_mp4': True,           # Use movflags for streaming
+            'fragmented_mp4': True,
         }
 
     def encode(self, frame_input_dir: str, output_path: str, options: Dict[str, Any]) -> None:
-        # Note: This implementation only handles video encoding from frames.
-        # The original command's audio options (-c:a, -b:a) are ignored as frames have no audio.
         merged_options = {**self.get_supported_options(), **options}
-
         print(f"Encoding with {self.name}...")
         print(f"Options: {merged_options}")
+
+        input_pattern = f'{frame_input_dir}/*.jpg'
 
         command = [
             'ffmpeg', '-y',
             '-framerate', str(merged_options['framerate']),
-            '-i', f'{frame_input_dir}/frame_%05d.png',
+            '-pattern_type', 'glob', '-i', input_pattern,
             '-vf', f"scale=-2:{merged_options['scale_height']}",
             '-c:v', self.name,
             '-preset', str(merged_options['preset']),
             '-b:v', str(merged_options['video_bitrate']),
             '-g', str(merged_options['gop_size']),
         ]
-
         if merged_options.get('fragmented_mp4', False):
             command.extend(['-movflags', 'frag_keyframe+empty_moov'])
-
         command.append(output_path)
 
         try:

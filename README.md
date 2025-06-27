@@ -12,13 +12,15 @@ Neural codecs are computationally intensive and **require a modern NVIDIA GPU wi
 
 1.  **Clone the repository:**
     ```sh
-    git clone <your-repo-url>
+    git clone https://github.com/emanuele-artioli/codec-harness.git
     cd video-codec-harness
     ```
 
 2.  **Initialize Git Submodules:**
     This step is crucial. It downloads the source code for the neural codecs into the `vendor/` directory.
     ```sh
+    git submodule add https://github.com/microsoft/DCVC.git vendor/DCVC
+    git submodule add https://github.com/hmkx/HiNeRV.git vendor/HiNeRV
     git submodule update --init --recursive
     ```
 
@@ -58,6 +60,7 @@ Neural codecs are computationally intensive and **require a modern NVIDIA GPU wi
 
     (in my_other_project.py)
 
+    ```python
     from codec_harness.shortcuts import encode_h264
     try:
         encode_h264(
@@ -69,6 +72,7 @@ Neural codecs are computationally intensive and **require a modern NVIDIA GPU wi
         print("Video encoded successfully!")
     except Exception as e:
         print(f"An error occurred: {e}")
+    ```
 
     *Style B: Using the Core encode Function*
 
@@ -76,6 +80,7 @@ Neural codecs are computationally intensive and **require a modern NVIDIA GPU wi
 
     (in my_other_project.py)
 
+    ```python
     from codec_harness import encode
     Codec could come from a config file, user input, etc.
     codec_to_use = "libx264" 
@@ -90,6 +95,7 @@ Neural codecs are computationally intensive and **require a modern NVIDIA GPU wi
         print("Video encoded successfully!")
     except Exception as e:
         print(f"An error occurred: {e}")
+    ```
 
 ### **How to Add a New Codec**
     Create the plugin file in the codec_harness/codecs/ directory (e.g., my_new_codec.py).

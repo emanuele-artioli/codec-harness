@@ -1,21 +1,16 @@
 [project]
 name = "codec-harness"
-version = "0.1.0"
+version = "0.2.0"
 description = "A modular, plugin-driven tool to encode videos with various codecs."
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
-    "opencv-python-headless",
-    "torch",
-    "torchvision",
-    "pytorch-msssim",
-    "tqdm",
-    # Add other dependencies from DCVC/HiNeRV if not covered by their setup
+    "opencv-python-headless", # For input handling
 ]
 
 [project.scripts]
 codec-harness = "codec_harness.main:main"
 
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["codec_harness*"]
